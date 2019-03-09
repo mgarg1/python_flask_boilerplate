@@ -1,17 +1,26 @@
 import os
 from flask import Flask, render_template, request, send_from_directory, url_for
 from pdf2image import convert_from_path
-
+from flask_pymongo import PyMongo
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-app = Flask(__name__)
+
+app = Flask(__name__,template_folder='../templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MONGO_DBNAME'] = 'python_flask_mongo_test'
+app.config['MONGO_URI'] = 'mongodb://mohitgarg:testpassword1@ds261155.mlab.com:61155/python_flask_mongo_test'
+
+mongo = PyMongo(app)
 
 @app.route("/")
 def hello():
     return "Hello World!"
+
+@app.route('/Airbus')
+def Airbus_dashboard():
+    return render_template('indexAirbus.html')
 
 @app.route('/upload')
 def upload_form():
